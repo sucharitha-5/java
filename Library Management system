@@ -1,0 +1,120 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    String title;
+    String author;
+    boolean issued;
+
+    Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.issued = false;
+    }
+}
+
+public class LibraryManagementSystem {
+
+    static ArrayList<Book> books = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+
+        books.add(new Book("Java Programming", "James Gosling"));
+        books.add(new Book("Data Structures", "Mark Allen"));
+        books.add(new Book("Operating Systems", "Abraham Silberschatz"));
+
+        while (true) {
+            System.out.println("\n===== Library Management System =====");
+            System.out.println("1. Display Books");
+            System.out.println("2. Add Book");
+            System.out.println("3. Issue Book");
+            System.out.println("4. Return Book");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    displayBooks();
+                    break;
+                case 2:
+                    addBook();
+                    break;
+                case 3:
+                    issueBook();
+                    break;
+                case 4:
+                    returnBook();
+                    break;
+                case 5:
+                    System.out.println("Thank you for using the Library Management System!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+    static void displayBooks() {
+        System.out.println("\nAvailable Books:");
+        for (int i = 0; i < books.size(); i++) {
+            Book b = books.get(i);
+            System.out.println((i + 1) + ". " + b.title + " by " + b.author +
+                    " [" + (b.issued ? "Issued" : "Available") + "]");
+        }
+    }
+
+    static void addBook() {
+        System.out.print("Enter Book Title: ");
+        String title = sc.nextLine();
+
+        System.out.print("Enter Author Name: ");
+        String author = sc.nextLine();
+
+        books.add(new Book(title, author));
+        System.out.println("Book added successfully!");
+    }
+
+    static void issueBook() {
+        displayBooks();
+
+        System.out.print("Enter Book Number to Issue: ");
+        int num = sc.nextInt();
+
+        if (num >= 1 && num <= books.size()) {
+            Book b = books.get(num - 1);
+
+            if (!b.issued) {
+                b.issued = true;
+                System.out.println("Book issued successfully!");
+            } else {
+                System.out.println("Book is already issued.");
+            }
+        } else {
+            System.out.println("Invalid book number.");
+        }
+    }
+
+    static void returnBook() {
+        displayBooks();
+
+        System.out.print("Enter Book Number to Return: ");
+        int num = sc.nextInt();
+
+        if (num >= 1 && num <= books.size()) {
+            Book b = books.get(num - 1);
+
+            if (b.issued) {
+                b.issued = false;
+                System.out.println("Book returned successfully!");
+            } else {
+                System.out.println("This book was not issued.");
+            }
+        } else {
+            System.out.println("Invalid book number.");
+        }
+    }
+}
